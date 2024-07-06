@@ -1,0 +1,206 @@
+import UIKit
+import Foundation
+
+//enum DiasDeLaSemana: Int, CaseIterable{
+    //case lunes = 1
+    //case martes = 2
+    //case miercoles = 3
+    //case jueves = 4
+    //case viernes = 5
+    //case sabado = 6
+    //case domingo = 7
+//}
+
+//let DiaDeLaSemana: DiasDeLaSemana = .jueves
+//print(DiaDeLaSemana.rawValue)
+
+//for dia in DiasDeLaSemana.allCases{
+    //print(dia)
+//}
+
+
+
+//enum DiasDeLaSemana: Int, CaseIterable{
+//    //rawValue
+//    //[AllCases]
+//    case lunes
+//    case martes
+//    case miercoles
+//    case jueves
+//    case viernes
+//    case sabado
+//    case domingo
+//    
+//    //Agregar una variable
+//    
+//    var nombre: String{
+//        switch self {
+//        case .lunes:
+//            return "Lunes"
+//        case .martes:
+//            return "Martes"
+//        case .miercoles:
+//            return "Miercoles"
+//        case .jueves:
+//            return "Jueves"
+//        case .viernes:
+//            return "Viernes"
+//        case .sabado:
+//            return "Sabado"
+//        case .domingo:
+//            return "Domingo"
+//        }
+//    }
+//    
+//    func obtenerPosicion() -> Int{
+//        self.rawValue
+//    }
+//}
+//
+//let dia: DiasDeLaSemana = .lunes
+//print(dia.nombre)
+//
+//for dia in DiasDeLaSemana.allCases{
+//    print(dia.obtenerPosicion())
+//}
+
+
+//enum Moneda{
+//    case euro
+//    case yen
+//    case libra
+//    
+//    
+//    var tasaDeCambio: Double{
+//        switch self {
+//        case .euro:
+//            return 0.05
+//        case .yen:
+//            return 110.0
+//        case .libra:
+//            return 0.75
+//        }
+//    }
+//    
+//    var simbolo: String{
+//        switch self {
+//        case .euro:
+//            return "€"
+//        case .yen:
+//            return "¥"
+//        case .libra:
+//            return "£"
+//        }
+//    }
+//    
+//    func convertirDesdeDolares(cantidadEnDolares: Double) -> Double{
+//        cantidadEnDolares * self.tasaDeCambio
+//    }
+//    
+//    func cantidadFormateada(cantidad: Double) -> String{
+//        "\(self.simbolo)\(cantidad)" //Interpolacion
+//    }
+//}
+//
+//let cantidadEnDolares = 100.00
+//let euro: Moneda = .euro
+//let cantidadEnEuros = euro.convertirDesdeDolares(cantidadEnDolares: cantidadEnDolares)
+//let cantidadFormateada = euro.cantidadFormateada(cantidad: cantidadEnEuros)
+//
+//print(cantidadEnEuros)
+//print(cantidadFormateada)
+
+//enum OperacionMatematica{
+//    
+//    case suma
+//    case resta
+//    case multiplicacion
+//    case division
+//}
+//
+//    class OperadorMatematico {
+//        
+//        static func realizarOperacion(a: Double, b: Double, operacion: OperacionMatematica) -> Double {
+//            switch operacion {
+//            case .suma:
+//                return a + b
+//            case .resta:
+//                return a - b
+//            case .multiplicacion:
+//                return a * b
+//            case .division:
+//                if (b != 0){
+//                    return a / b
+//                    
+//                } else {
+//                    print("Error: Division por cero")
+//                    return 0
+//                }
+//            }
+//        }
+//    }
+
+
+
+//protocol DownloadDelegate{
+//    func didStartDownload()
+//    func didFinishDownload()
+//}
+//
+//class Downloader{
+//    var downloadDelegate: DownloadDelegate?
+//    func startDownload(){
+//        downloadDelegate?.didStartDownload()
+//        //
+//        //
+//        //
+//        downloadDelegate?.didFinishDownload()
+//    }
+//}
+//
+//class DownloadManager{
+//    
+//}
+//
+//extension DownloadManager: DownloadDelegate{
+//    func did
+//}
+
+
+enum EstadoPedido{
+    case procesando
+    case enviado
+    case entregando
+}
+
+protocol NotificacionPedido{
+    func notificarCambioDeEstado(nuevoEstado: EstadoPedido) -> Void
+}
+
+class Pedido{
+    var estado: EstadoPedido
+    var delegado: NotificacionPedido?
+    
+    init(estado: EstadoPedido, delegado: NotificacionPedido? = nil) {
+        self.estado = estado
+        self.delegado = delegado
+    }
+    
+    func cambiarEstado(nuevoEstado: EstadoPedido){
+        estado = nuevoEstado
+        if (delegado != nil){
+            return delegado!.notificarCambioDeEstado(nuevoEstado: nuevoEstado)
+        }
+    }
+}
+
+class GestorPedido: NotificacionPedido{
+    func notificarCambioDeEstado(nuevoEstado: EstadoPedido){
+    print("El estado del pedido ha cambiado a: ",  nuevoEstado)
+    }
+}
+
+var gestor = GestorPedido()
+var pedido = Pedido(estado: EstadoPedido.procesando)
+pedido.delegado = gestor
+pedido.cambiarEstado(nuevoEstado: EstadoPedido.enviado)
